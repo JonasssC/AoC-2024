@@ -1,4 +1,6 @@
 ### IntelliJ IDEA ###
+.idea/
+AoC-2024.iml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
