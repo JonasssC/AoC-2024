@@ -26,33 +26,24 @@ val directions = listOf(
 fun inField(input: Input, row: Int, col: Int) =
     0 <= row && row < input.size && 0 <= col && col < input[row].length
 
-fun part1(input: Input): Output {
-    val xCoords = input.flatMapIndexed { row, line ->
+fun part1(input: Input): Output =
+    input.flatMapIndexed { row, line ->
         line.withIndex().filter { it.value == 'X' }.map { row to it.index }
-    }
-
-    var count = 0
-    for ((row, col) in xCoords) {
-        for ((dRow, dCol) in directions) {
-            if (inField(input, row + 3 * dRow, col + 3 * dCol)) {
-                if (input[row + dRow][col + dCol] == 'M'
+    }.sumOf { (row, col) ->
+        directions.count { (dRow, dCol) ->
+            inField(input, row + 3 * dRow, col + 3 * dCol)
+                    && input[row + dRow][col + dCol] == 'M'
                     && input[row + 2 * dRow][col + 2 * dCol] == 'A'
-                    && input[row + 3 * dRow][col + 3 * dCol] == 'S') {
-                    count++
-                }
-            }
+                    && input[row + 3 * dRow][col + 3 * dCol] == 'S'
         }
     }
-
-    return count
-}
 
 fun part2(input: Input): Output =
     input.flatMapIndexed { row, line ->
         line.withIndex().filter { it.value == 'A' }.map { row to it.index }
-    }.filter { (row, col) ->
+    }.count { (row, col) ->
         inField(input, row - 1, col - 1)
                 && inField(input, row + 1, col + 1)
                 && listOf(input[row + 1][col + 1], input[row - 1][col - 1]).sorted() == listOf('M', 'S')
                 && listOf(input[row + 1][col - 1], input[row - 1][col + 1]).sorted() == listOf('M', 'S')
-    }.size
+    }
