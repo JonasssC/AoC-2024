@@ -44,6 +44,6 @@ fun part2(input: Input): Output =
     }.count { (row, col) ->
         inField(input, row - 1, col - 1)
                 && inField(input, row + 1, col + 1)
-                && listOf(input[row + 1][col + 1], input[row - 1][col - 1]).sorted() == listOf('M', 'S')
-                && listOf(input[row + 1][col - 1], input[row - 1][col + 1]).sorted() == listOf('M', 'S')
+                && listOf(input[row + 1][col + 1], input[row - 1][col - 1]).toSet() == setOf('M', 'S')
+                && listOf(input[row + 1][col - 1], input[row - 1][col + 1]).toSet() == setOf('M', 'S')
     }
