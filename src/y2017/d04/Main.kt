@@ -1,9 +1,9 @@
 package y2017.d04
 
-import lib.readStr
+import lib.readInput
 
 fun main() {
-    val input = readStr(2017, 4)
+    val input = readInput(2017, 4)
         .lines()
         .map { it.split("\\s".toRegex()) }
     println("Part 1: ${part1(input)}")

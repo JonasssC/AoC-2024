@@ -1,9 +1,9 @@
 package y2017.d06
 
-import lib.readStr
+import lib.readInput
 
 fun main() {
-    val input = readStr(2017, 6)
+    val input = readInput(2017, 6)
         .split("\\s".toRegex())
         .map { it.toInt() }
     val (sol1, sol2) = solve(input)

@@ -1,10 +1,10 @@
 package y2017.d19
 
-import lib.readStr
+import lib.readInput
 import kotlin.math.min
 
 fun main() {
-    val input = readStr(2017, 19).lines()
+    val input = readInput(2017, 19).lines()
 
     val (sol1 , sol2) = solve(input)
     println("Part 1: $sol1")

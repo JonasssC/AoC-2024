@@ -1,6 +1,6 @@
 package y2017.d07
 
-import lib.readStr
+import lib.readInput
 
 data class Program(val name: String, val weight: Int, val children: List<String>) {
     companion object {
@@ -18,7 +18,7 @@ data class Program(val name: String, val weight: Int, val children: List<String>
 }
 
 fun main() {
-    val input = readStr(2017, 7)
+    val input = readInput(2017, 7)
         .lines()
         .map { Program.parse(it) }
         .groupBy { it.name }

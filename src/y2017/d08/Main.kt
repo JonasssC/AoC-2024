@@ -1,6 +1,6 @@
 package y2017.d08
 
-import lib.readStr
+import lib.readInput
 
 enum class Operation(val key: String) {
     INCREMENT("inc") {
@@ -58,7 +58,7 @@ data class Instruction(val name: String, val op: Operation, val value: Int, val 
 }
 
 fun main() {
-    val input = readStr(2017, 8)
+    val input = readInput(2017, 8)
         .lines()
         .map { Instruction.parse(it) }
     println("Part 1: ${part1(input)}")

@@ -1,6 +1,6 @@
 package y2017.d16
 
-import lib.readStr
+import lib.readInput
 
 abstract class Move {
     abstract fun perform(line: MutableList<Char>): MutableList<Char>
@@ -49,7 +49,7 @@ class Partner(private var program1: Char, private var program2: Char) : Move() {
 }
 
 fun main() {
-    val input = readStr(2017, 16).split(',').map { Move.parse(it) }
+    val input = readInput(2017, 16).split(',').map { Move.parse(it) }
 
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")

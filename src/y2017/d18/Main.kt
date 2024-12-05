@@ -1,11 +1,11 @@
 package y2017.d18
 
-import lib.readStr
+import lib.readInput
 import java.util.LinkedList
 import java.util.Queue
 
 fun main() {
-    val input = readStr(2017, 18).lines().map { it.split(' ') }
+    val input = readInput(2017, 18).lines().map { it.split(' ') }
 
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")

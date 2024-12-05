@@ -1,12 +1,12 @@
 package y2024.d04
 
-import lib.readStr
+import lib.readInput
 
 typealias Input = List<String>
 typealias Output = Int
 
 fun main() {
-    val input = readStr(2024, 4).lines()
+    val input = readInput(2024, 4).lines()
 
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")

@@ -1,10 +1,10 @@
 package y2024.d02
 
-import lib.readStr
+import lib.readInput
 import kotlin.math.abs
 
 fun main() {
-    val input = readStr(2024, 2).lines().map { it.split(" ").map { n -> n.toInt() } }
+    val input = readInput(2024, 2).lines().map { it.split(" ").map { n -> n.toInt() } }
 
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")

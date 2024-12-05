@@ -1,9 +1,9 @@
 package y2017.d09
 
-import lib.readStr
+import lib.readInput
 
 fun main() {
-    val input = readStr(2017, 9)
+    val input = readInput(2017, 9)
     val (sol1, sol2) = solve(input)
     println("Part 1: $sol1")
     println("Part 2: $sol2")

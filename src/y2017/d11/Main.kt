@@ -1,12 +1,12 @@
 package y2017.d11
 
-import lib.readStr
+import lib.readInput
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 fun main() {
-    val input = readStr(2017, 11).split(",")
+    val input = readInput(2017, 11).split(",")
     println("Part 1: ${part1(input)}")
     println("Part 2: ${part2(input)}")
 }

@@ -1,9 +1,9 @@
 package y2017.d13
 
-import lib.readStr
+import lib.readInput
 
 fun main() {
-    val input = readStr(2017, 13).lines().associate {
+    val input = readInput(2017, 13).lines().associate {
         val (depth, range) = it.split(": ", )
         Pair(depth.toInt(), range.toInt())
     }

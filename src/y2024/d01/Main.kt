@@ -1,10 +1,10 @@
 package y2024.d01
 
-import lib.readStr
+import lib.readInput
 import kotlin.math.abs
 
 fun main() {
-    val (list1, list2) = readStr(2024, 1).lines().fold(Pair<MutableList<Int>, MutableList<Int>>(mutableListOf(), mutableListOf())) { (list1, list2), line ->
+    val (list1, list2) = readInput(2024, 1).lines().fold(Pair<MutableList<Int>, MutableList<Int>>(mutableListOf(), mutableListOf())) { (list1, list2), line ->
         val split = line.split(Regex("\\s+"))
         list1.add(split[0].toInt())
         list2.add(split[1].toInt())

@@ -1,9 +1,9 @@
 package y2017.d10
 
-import lib.readStr
+import lib.readInput
 
 fun main() {
-    val input = readStr(2017, 10)
+    val input = readInput(2017, 10)
     println("Part 1: ${part1(input.split(",").map { it.toInt() })}")
     println("Part 2: ${part2(input)}")
 }
