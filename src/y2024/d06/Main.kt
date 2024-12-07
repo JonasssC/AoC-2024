@@ -1,6 +1,7 @@
 package y2024.d06
 
 import lib.readInput
+import kotlin.time.measureTime
 
 typealias Output = Int
 typealias Point = Pair<Int, Int>
@@ -18,7 +19,7 @@ fun main() {
                 null
             }
         }
-    }
+    }.toSet()
     val (guardY, guardLine) = input.withIndex().first {
         it.value.contains(Regex("[<>^v]"))
     }
@@ -27,8 +28,14 @@ fun main() {
     }
     val guard = (guardX to guardY) to Direction.identify(guardChar)
 
-    println("Part 1: ${part1(dim, obstacles, guard)}")
-    println("Part 2: ${part2(dim, obstacles, guard)}")
+    val time1 = measureTime {
+        println("Part 1: ${part1(dim, obstacles, guard)}")
+    }
+    println("Part 1 took $time1")
+    val time2 = measureTime {
+        println("Part 2: ${part2(dim, obstacles, guard)}")
+    }
+    println("Part 2 took $time2")
 }
 
 enum class Direction(private val id: Char, private val step: Pair<Int, Int>) {
@@ -57,7 +64,7 @@ enum class Direction(private val id: Char, private val step: Pair<Int, Int>) {
 fun guardIsInField(dim: Pair<Int, Int>, coords: Point): Boolean =
     0 <= coords.first && coords.first < dim.first && 0 <= coords.second && coords.second < dim.second
 
-fun stepAround(dim: Pair<Int, Int>, obstacles: List<Pair<Int,Int>>, guard: Guard, stepped: MutableSet<Guard> = mutableSetOf()): Pair<Guard, Set<Guard>> {
+fun stepAround(dim: Pair<Int, Int>, obstacles: Set<Pair<Int,Int>>, guard: Guard, stepped: MutableSet<Guard> = mutableSetOf()): Pair<Guard, Set<Guard>> {
     var movingGuard = guard
 
     while (guardIsInField(dim, movingGuard.first) && movingGuard !in stepped) {
@@ -73,21 +80,33 @@ fun stepAround(dim: Pair<Int, Int>, obstacles: List<Pair<Int,Int>>, guard: Guard
     return movingGuard to stepped
 }
 
-fun part1(dim: Pair<Int, Int>, obstacles: List<Pair<Int,Int>>, guard: Guard): Output =
+fun part1(dim: Pair<Int, Int>, obstacles: Set<Pair<Int,Int>>, guard: Guard): Output =
     stepAround(dim, obstacles, guard).second.distinctBy { it.first }.count()
 
-fun part2(dim: Pair<Int, Int>, obstacles: List<Pair<Int,Int>>, guard: Guard): Output {
-    val steps = stepAround(dim, obstacles, guard).second
-    val possibleNewObstacles = steps.map{
-        (pos, dir) -> dir.step(pos)
-    }.distinct().filter {
-        it !in obstacles && it != guard.first && guardIsInField(dim, it)
-    }.filter{
-        val newObstacles = obstacles.toMutableList()
-        newObstacles.add(it)
-        val (lastGuard, _) = stepAround(dim, newObstacles, guard)
-        guardIsInField(dim, lastGuard.first)
+fun part2(dim: Pair<Int, Int>, obstacles: Set<Pair<Int,Int>>, guard: Guard): Output {
+    var movingGuard = guard
+    val stepped: MutableSet<Guard> = mutableSetOf()
+    val testedPositions: MutableSet<Pair<Int, Int>> = mutableSetOf()
+    var count = 0
+
+    while (guardIsInField(dim, movingGuard.first) && movingGuard !in stepped) {
+        val nextPos = movingGuard.second.step(movingGuard.first)
+        if (nextPos !in testedPositions && nextPos != guard.first && guardIsInField(dim, nextPos)) {
+            val newObstacles = obstacles.toMutableSet()
+            newObstacles.add(nextPos)
+            testedPositions.add(nextPos)
+            val (finalGuard, _) = stepAround(dim, newObstacles, movingGuard, stepped.toMutableSet())
+            if (guardIsInField(dim, finalGuard.first)) {
+                count++
+            }
+        }
+        stepped.add(movingGuard)
+        movingGuard = if (nextPos in obstacles) {
+            movingGuard.first to movingGuard.second.rotate()
+        } else {
+            nextPos to movingGuard.second
+        }
     }
 
-    return possibleNewObstacles.size
+    return count
 }
