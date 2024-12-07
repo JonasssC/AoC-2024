@@ -22,14 +22,6 @@ fun main() {
     println("Part 2 took $time2")
 }
 
-fun isPossible(values: List<Long>, result: Long, ops: Set<Operation>): Boolean {
-    if (values.isEmpty()) return false
-    if (values.size == 1) return values[0] == result
-    return ops.any {
-        isPossible(listOf(it.apply(values[0], values[1]), *values.subList(2, values.size).toTypedArray()), result, ops)
-    }
-}
-
 enum class Operation {
     ADD {
         override fun apply(a: Long, b: Long): Long =
@@ -45,6 +37,14 @@ enum class Operation {
     };
 
     abstract fun apply(a: Long, b: Long): Long
+}
+
+fun isPossible(values: List<Long>, result: Long, ops: Set<Operation>): Boolean {
+    if (values.isEmpty()) return false
+    if (values.size == 1) return values[0] == result
+    return ops.any {
+        isPossible(listOf(it.apply(values[0], values[1]), *values.subList(2, values.size).toTypedArray()), result, ops)
+    }
 }
 
 fun part1(input: Input): Output =
