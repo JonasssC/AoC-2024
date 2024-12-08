@@ -23,13 +23,13 @@ fun main() {
 }
 
 enum class Operation {
-    ADD {
-        override fun apply(a: Long, b: Long): Long =
-            a + b
-    },
     MULTIPLY {
         override fun apply(a: Long, b: Long): Long =
             a * b
+    },
+    ADD {
+        override fun apply(a: Long, b: Long): Long =
+            a + b
     },
     CONCAT {
         override fun apply(a: Long, b: Long): Long =
@@ -41,6 +41,7 @@ enum class Operation {
 
 fun isPossible(values: List<Long>, result: Long, ops: Set<Operation>): Boolean {
     if (values.isEmpty()) return false
+    if (values[0] > result) return false
     if (values.size == 1) return values[0] == result
     return ops.any {
         isPossible(listOf(it.apply(values[0], values[1]), *values.subList(2, values.size).toTypedArray()), result, ops)
@@ -49,7 +50,7 @@ fun isPossible(values: List<Long>, result: Long, ops: Set<Operation>): Boolean {
 
 fun part1(input: Input): Output =
     input.filter {
-        isPossible(it.second, it.first, setOf(Operation.ADD, Operation.MULTIPLY))
+        isPossible(it.second, it.first, setOf(Operation.MULTIPLY, Operation.ADD))
     }.sumOf { it.first }
 
 fun part2(input: Input): Output =
