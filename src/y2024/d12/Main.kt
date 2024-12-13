@@ -1,6 +1,7 @@
 package y2024.d12
 
 import lib.readInput
+import lib.plus
 
 typealias Output = Int
 typealias Input = Map<Pair<Int, Int>, Char>
@@ -16,7 +17,7 @@ fun main() {
     println("Part 2: ${part2(input)}")
 }
 
-val directions = listOf(0 to 1, -1 to 0, 1 to 0, 0 to -1)
+val directions = listOf(0 to 1, 1 to 0, 0 to -1, -1 to 0)
 
 fun collectGroup(coord: Pair<Int, Int>, coords: MutableMap<Pair<Int, Int>, Char>): Set<Pair<Int, Int>> {
     if (!coords.containsKey(coord)) return emptySet()
@@ -24,7 +25,7 @@ fun collectGroup(coord: Pair<Int, Int>, coords: MutableMap<Pair<Int, Int>, Char>
     coords -= coord
     val result = mutableSetOf(coord)
     for (direction in directions) {
-        val newCoord = coord.first + direction.first to coord.second + direction.second
+        val newCoord = coord + direction
         if (newCoord in coords && coords[newCoord] == char) {
             result += collectGroup(newCoord, coords)
         }
@@ -40,37 +41,34 @@ fun collectGroups(coords: Input): Set<Set<Pair<Int, Int>>> {
     }
     return res
 }
-
-enum class Side(val direction: Pair<Int, Int>) {
-    LEFT(0 to -1), RIGHT(0 to 1), TOP(-1 to 0), BOTTOM(1 to 0);
-}
-
-fun collectSides(area: Set<Pair<Int, Int>>): List<Pair<Pair<Int, Int>, Side>> =
-    area.flatMap {
-        Side.entries.mapNotNull { side ->
-            val newCoord = it.first + side.direction.first to it.second + side.direction.second
-            if (newCoord !in area) {
-                newCoord to side
-            } else {
-                null
-            }
+fun calculatePerimeter(area: Set<Pair<Int, Int>>): Int =
+    area.sumOf {
+        directions.count { dir ->
+            it + dir !in area
         }
     }
 
 fun part1(coords: Input): Output =
     collectGroups(coords).sumOf {
-        collectSides(it).size * it.size
+        calculatePerimeter(it) * it.size
+    }
+
+val cornerChecks = listOf(
+    directions[0] to directions[1],
+    directions[1] to directions[2],
+    directions[2] to directions[3],
+    directions[3] to directions[0]
+)
+
+fun countCorners(area: Set<Pair<Int, Int>>): Int =
+    area.sumOf {
+        cornerChecks.count { (dir1, dir2) ->
+            (it + dir1 !in area && it + dir2 !in area) // 90° corner
+                    || (it + dir1 in area && it + dir2 in area && it + dir1 + dir2 !in area) // 270° corner
+        }
     }
 
 fun part2(coords: Input): Output =
     collectGroups(coords).sumOf {
-        val sides = collectSides(it)
-        val uniqueSides = sides.filterNot { (coord, dir) ->
-            val coordToCheck = when (dir) {
-                Side.LEFT, Side.RIGHT -> coord.first - 1 to coord.second
-                Side.TOP, Side.BOTTOM -> coord.first to coord.second - 1
-            }
-            sides.contains(coordToCheck to dir)
-        }
-        uniqueSides.size * it.size
+        countCorners(it) * it.size
     }
