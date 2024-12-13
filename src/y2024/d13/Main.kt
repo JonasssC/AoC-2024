@@ -33,6 +33,14 @@ fun main() {
 
 fun part1(input: Input): Output =
     input.sumOf {
+        // x = a * dXA + b * dXB
+        //   => b = (x - a * dXA) / dXB
+        // y = a * dYA + b * dYB
+        //   = a * dYA + (x - a * dXA) * dYB / dXB
+        // => y * dXB = a * dYA * dXB + (x - a * dXA) * dYB
+        //            = a * dYA * dXB + x * dYB - a * dXA * dYB
+        //            = a * (dYA * dXB - dXA * dYB) + x * dYB
+        // => a = (y * dXB - x * dYB) / (dYA * dXB - dXA * dYB)
         if ((it.dXB * it.y - it.dYB * it.x) % (it.dYA * it.dXB - it.dXA * it.dYB) != 0L) return@sumOf 0
         val a = (it.dXB * it.y - it.dYB * it.x) / (it.dYA * it.dXB - it.dXA * it.dYB)
         if ((it.x - a * it.dXA) % it.dXB != 0L) return@sumOf 0
