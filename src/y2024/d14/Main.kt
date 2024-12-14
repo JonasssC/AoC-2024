@@ -21,7 +21,6 @@ class Robot(val x: Int, val y: Int, val vx: Int, val vy: Int) {
     companion object {
         fun parse(str: String): Robot {
             val nums = str.split("p=", ",", " v=")
-            // println(nums)
             return Robot(nums[1].toInt(), nums[2].toInt(), nums[3].toInt(), nums[4].toInt())
         }
     }
