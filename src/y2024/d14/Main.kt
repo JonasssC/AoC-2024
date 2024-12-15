@@ -1,6 +1,7 @@
 package y2024.d14
 
 import lib.readInput
+import kotlin.math.pow
 
 typealias Output = Int
 typealias Input = List<Robot>
@@ -61,8 +62,14 @@ fun printMap(robots: List<Robot>) {
 fun part2(input: Input): Output {
     var robots = input
     var i = 0
-    while (robots.size != robots.distinctBy { it.x to it.y }.size) {
+    var varianceX = 1000.0
+    var varianceY = 1000.0
+    while (varianceX > 500 || varianceY > 500) {
         robots = robots.map { it.moveTimes(1) }
+        var meanX = robots.map { it.x }.average()
+        varianceX = robots.map { (it.x - meanX).pow(2) }.average()
+        var meanY = robots.map { it.y }.average()
+        varianceY = robots.map { (it.y - meanY).pow(2) }.average()
         i++
     }
     if (DEBUG) {
