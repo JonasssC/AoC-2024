@@ -31,16 +31,6 @@ fun heuristic(point: Pair<Int, Int>): Int {
     return END.first - point.first + END.second - point.second
 }
 
-fun reconstructPath(cameFrom: Map<Pair<Int, Int>, Pair<Int, Int>>): List<Pair<Int, Int>> {
-    val path = mutableListOf(END)
-    var current = END
-    while (current in cameFrom) {
-        current = cameFrom[current]!!
-        path.addFirst(current)
-    }
-    return path
-}
-
 fun part1(input: Set<Pair<Int, Int>>): Output {
     val openSet = mutableSetOf(START)
     val cameFrom = mutableMapOf<Pair<Int, Int>, Pair<Int, Int>>()
@@ -50,7 +40,7 @@ fun part1(input: Set<Pair<Int, Int>>): Output {
     while (openSet.isNotEmpty()) {
         val current = openSet.minBy { fScore[it]!! }
         if (current == END) {
-            return reconstructPath(cameFrom).size - 1
+            return gScore[END]!!
         }
 
         openSet.remove(current)
@@ -72,10 +62,15 @@ fun part1(input: Set<Pair<Int, Int>>): Output {
 }
 
 fun part2(input: Input): String {
-    val occupied = input.take(N).toMutableSet()
-    var i = N + 1
-    while (part1(occupied) != -1) {
-        occupied += input[i++]
+    var min = N + 1
+    var max = input.size - 1
+    while (min < max) {
+        val avg = (min + max) / 2
+        if (part1(input.take(avg + 1).toMutableSet()) == -1) {
+            max = avg
+        } else {
+            min = avg + 1
+        }
     }
-    return "${input[i - 1].first},${input[i - 1].second}"
+    return "${input[min].first},${input[min].second}"
 }
